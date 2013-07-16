@@ -1,0 +1,60 @@
+<html>
+    <head>
+    	<script type="text/javascript">
+    	function xmlhttpConnect() {
+    		if (window.XMLHttpRequest)
+    		{// code for IE7+, Firefox, Chrome, Opera, Safari
+    			return new XMLHttpRequest();
+    		}
+    		else
+    		{// code for IE6, IE5
+    			return new ActiveXObject("Microsoft.XMLHTTP");
+    		}
+    	}
+
+    	function loadData()
+    	{
+    		xmlhttp = xmlhttpConnect();
+    		xmlhttp.open("GET","data.php",true);
+    		xmlhttp.onreadystatechange=function()
+    		{
+    			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    			{
+    				document.getElementById("data").innerHTML=xmlhttp.responseText;
+    			}
+    		}
+    		
+    		xmlhttp.send();
+    	}
+
+    	function consume(kind, amount) {
+    		xmlhttp = xmlhttpConnect();
+    		xmlhttp.open("GET","consume.php?kind=" + kind + "&amount=" + amount,true);
+    		xmlhttp.onreadystatechange=function()
+    		{
+    			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    			{
+    				document.getElementById("buttonResponse").innerHTML=xmlhttp.responseText;
+    			}
+    			loadData();
+    		}
+    		
+    		xmlhttp.send();
+    	}
+      </script>
+    </head>
+    <body>
+    	
+    	<div id="buttons">
+    		<input type="Button" name="drinkWater" value="Drank Water" onclick="consume('water', '0.6')" />
+    		<input type="Button" name="drinkCoffee" value="Drank Coffee" onclick="consume('coffee', '0.3')" />
+    	</div>
+    	<div id="buttonResponse">
+    	</div>
+    	<script> loadData() </script>
+    	<div id="dataDisplay">
+    		<h2>Data:</h2>
+    		<div id="data">PHP connection failed.</div>
+    	</div>
+    </body>
+</html>
